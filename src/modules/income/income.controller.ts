@@ -27,32 +27,35 @@ export class IncomeController {
 
   //Show income(s)
   @Get()
-  async listAllIncomes() {
-    //return
+  async listAllIncomes(@Body() body) {
+    return { incomes: [body] };
   }
 
   @Get(':id')
   async listOneIncome(@Param('id') id) {
-    //return
+    return { id };
   }
 
-  //Update income
+  //Update income (PUT - Total) / (PATCH - Partial)
   @Put(':id')
   async updateAllIncome(@Body() body: UpdatePutIncomeDTO, @Param('id') params) {
-    //return
+    return { body };
   }
 
   @Patch(':id')
   async updatePartialIncome(
     @Body() body: UpdatePatchIncomeDTO,
-    @Param('id') params,
+    @Param('id') id,
   ) {
-    //return
+    return {
+      id,
+      body,
+    };
   }
 
   //Delete income
   @Delete(':id')
-  async deleteIncome(@Param('id') params) {
-    //return
+  async deleteIncome(@Param('id') id) {
+    return { id };
   }
 }

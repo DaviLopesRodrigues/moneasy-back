@@ -1,10 +1,12 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class CreateIncomeInputDTO {
   @IsNumber()
   amount: number;
 
-  @IsString() //TO DO: Mudar para @IsDate()
+  @IsDate()
+  @Type(() => Date)
   date_transaction: Date;
 
   @IsString()
