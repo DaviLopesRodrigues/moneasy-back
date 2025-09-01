@@ -4,11 +4,24 @@ import {
   UpdatePatchIncomeDTO,
   UpdatePutIncomeDTO,
 } from './dto/update-income-input.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class IncomeService {
+  constructor(private readonly prisma: PrismaService) {}
+
   async create(body: CreateIncomeInputDTO) {
-    //return this.
+    const { amount, category, date_transaction, description, income_method } =
+      body;
+    return this.prisma.income.create({
+      data: {
+        amount: amount,
+        category: category,
+        date_transaction: date_transaction,
+        description: description,
+        income_method: income_method,
+      },
+    });
   }
 
   async listAll() {
