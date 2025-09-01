@@ -4,9 +4,12 @@ import {
   UpdatePatchExpenseDTO,
   UpdatePutExpenseDTO,
 } from './dto/update-expense-input.dto';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ExpenseService {
+  constructor(private readonly prisma: PrismaService) {}
+
   async create(body: CreateExpenseInputDTO) {
     //return this.
   }
