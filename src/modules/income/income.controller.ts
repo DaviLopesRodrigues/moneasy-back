@@ -22,7 +22,7 @@ export class IncomeController {
   //Create income
   @Post()
   async createIncome(@Body() body: CreateIncomeInputDTO) {
-    return { body };
+    return this.incomeService.create(body);
   }
 
   //Show income(s)
