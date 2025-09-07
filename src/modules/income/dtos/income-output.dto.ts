@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsInt, IsNumber, IsString } from 'class-validator';
 
-export class CreateIncomeInputDTO {
+export class IncomeOutputDTO {
   @IsNumber()
   amount: number;
 
@@ -17,4 +17,7 @@ export class CreateIncomeInputDTO {
 
   @IsString()
   income_method: string;
+
+  @IsInt()
+  id_income: number;
 }
