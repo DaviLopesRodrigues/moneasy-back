@@ -1,6 +1,6 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 
-export class CreateIncomeOutputDTO {
+export class UpdateExpenseOutputDTO {
   @Expose()
   id: string;
 
