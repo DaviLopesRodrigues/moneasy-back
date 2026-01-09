@@ -122,7 +122,7 @@ export class IncomeService {
 
     const income = await this.prismaService.income.delete({
       where: {
-        id: id, // Delete usa apenas o ID
+        id: id,
       },
     });
 
