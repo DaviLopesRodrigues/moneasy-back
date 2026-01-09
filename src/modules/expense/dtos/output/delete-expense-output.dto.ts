@@ -1,19 +1,19 @@
 import { Exclude, Expose, Transform, Type } from 'class-transformer';
 
-export class CreateIncomeOutputDTO {
+export class DeleteExpenseOutputDTO {
   @Expose()
   id: string;
 
-  @Expose()
+  @Exclude()
   date: Date;
 
-  @Expose()
+  @Exclude()
   description: string;
 
-  @Expose()
+  @Exclude()
   category: string;
 
-  @Expose()
+  @Exclude()
   @Transform(({ value }) => Number(value))
   @Type(() => Number)
   value: number;
