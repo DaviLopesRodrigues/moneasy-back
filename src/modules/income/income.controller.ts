@@ -20,12 +20,26 @@ import {
 import { UpdateIncomeInputDTO } from './dtos/input/update-income-input.dto';
 import { UpdateIncomeOutputDTO } from './dtos/output/update-income-output.dto';
 import { DeleteIncomeOutputDTO } from './dtos/output/delete-income-output.dto';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Incomes')
 @Controller('incomes')
 @UseGuards(AuthGuard)
+@ApiBearerAuth()
 export class IncomeController {
   constructor(private readonly incomeService: IncomeService) {}
 
+  @ApiOperation({ summary: 'Criar registro de receita' })
+  @ApiResponse({ status: 200, description: 'Cadastro realizado com sucesso.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro ao criar registro de receita.',
+  })
   @Post()
   async createIncome(
     @Body() data: CreateIncomeInputDTO,
@@ -35,12 +49,24 @@ export class IncomeController {
     return await this.incomeService.createIncome(data, userId);
   }
 
+  @ApiOperation({ summary: 'Listar registros de receita' })
+  @ApiResponse({ status: 200, description: 'Listagem realizada com sucesso.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro ao listar registros de receita.',
+  })
   @Get()
   async findAllIncomes(@Req() req): Promise<findAllIncomesOutputDTO[]> {
     const userId = req.user.id;
     return await this.incomeService.findAllIncomes(userId);
   }
 
+  @ApiOperation({ summary: 'Listar registro de receita' })
+  @ApiResponse({ status: 200, description: 'Listagem realizada com sucesso.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro ao listar registro de receita.',
+  })
   @Get(':id')
   async findOneIncome(
     @Param('id') id: string,
@@ -50,6 +76,12 @@ export class IncomeController {
     return await this.incomeService.findOneIncome(id, userId);
   }
 
+  @ApiOperation({ summary: 'Editar registro de receita' })
+  @ApiResponse({ status: 200, description: 'Edição realizada com sucesso.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro ao editar registro de receita.',
+  })
   @Patch(':id')
   async updateIncome(
     @Body() data: UpdateIncomeInputDTO,
@@ -60,6 +92,12 @@ export class IncomeController {
     return await this.incomeService.updateIncome(userId, id, data);
   }
 
+  @ApiOperation({ summary: 'Excluir registro de receita' })
+  @ApiResponse({ status: 200, description: 'Exclusão realizada com sucesso.' })
+  @ApiResponse({
+    status: 500,
+    description: 'Erro ao excluir registro de receita.',
+  })
   @Delete(':id')
   async deleteIncome(
     @Param('id') id: string,
