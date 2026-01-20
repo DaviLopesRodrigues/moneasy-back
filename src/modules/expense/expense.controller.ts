@@ -22,6 +22,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @ApiTags('Expenses')
 @UseGuards(AuthGuard)
@@ -39,10 +40,9 @@ export class ExpenseController {
   @Post()
   async createExpense(
     @Body() data: CreateExpenseInputDTO,
-    @Req() req,
+    @User('id') user,
   ): Promise<CreateExpenseOutputDTO> {
-    const userId = req.user.id;
-    return this.expenseService.createExpense(userId, data);
+    return this.expenseService.createExpense(user, data);
   }
 
   @ApiOperation({ summary: 'Listar registros de despesa' })
@@ -52,9 +52,8 @@ export class ExpenseController {
     description: 'Erro ao listar registros de despesa.',
   })
   @Get()
-  async findAllExpenses(@Req() req) {
-    const userId = req.user.id;
-    return this.expenseService.findAllExpenses(userId);
+  async findAllExpenses(@User('id') user) {
+    return this.expenseService.findAllExpenses(user);
   }
 
   @ApiOperation({ summary: 'Listar registro de despesa' })
@@ -64,9 +63,8 @@ export class ExpenseController {
     description: 'Erro ao listar registro de despesa.',
   })
   @Get(':id')
-  async findOneExpense(@Param('id') id: string, @Req() req) {
-    const userId = req.user.id;
-    return await this.expenseService.findOneExpense(id, userId);
+  async findOneExpense(@Param('id') id: string, @User('id') user) {
+    return await this.expenseService.findOneExpense(id, user);
   }
 
   @ApiOperation({ summary: 'Editar registro de despesa' })
@@ -78,11 +76,10 @@ export class ExpenseController {
   @Patch(':id')
   async updateExpense(
     @Param('id') id: string,
-    @Req() req,
+    @User('id') user,
     @Body() data: UpdateExpenseInputDTO,
   ): Promise<UpdateExpenseOutputDTO> {
-    const userId = req.user.id;
-    return this.expenseService.updateExpense(id, userId, data);
+    return this.expenseService.updateExpense(id, user, data);
   }
 
   @ApiOperation({ summary: 'Excluir registro de despesa' })
@@ -94,9 +91,8 @@ export class ExpenseController {
   @Delete(':id')
   async deleteExpense(
     @Param('id') id: string,
-    @Req() req,
+    @User('id') user,
   ): Promise<DeleteExpenseOutputDTO> {
-    const userId = req.user.id;
-    return this.expenseService.deleteExpense(id, userId);
+    return this.expenseService.deleteExpense(id, user);
   }
 }
