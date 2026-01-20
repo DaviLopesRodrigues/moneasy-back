@@ -26,6 +26,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { User } from 'src/decorators/user.decorator';
 
 @ApiTags('Incomes')
 @Controller('incomes')
@@ -43,10 +44,9 @@ export class IncomeController {
   @Post()
   async createIncome(
     @Body() data: CreateIncomeInputDTO,
-    @Req() req,
+    @User('id') user,
   ): Promise<CreateIncomeOutputDTO> {
-    const userId = req.user.id;
-    return await this.incomeService.createIncome(data, userId);
+    return await this.incomeService.createIncome(data, user);
   }
 
   @ApiOperation({ summary: 'Listar registros de receita' })
@@ -56,9 +56,8 @@ export class IncomeController {
     description: 'Erro ao listar registros de receita.',
   })
   @Get()
-  async findAllIncomes(@Req() req): Promise<findAllIncomesOutputDTO[]> {
-    const userId = req.user.id;
-    return await this.incomeService.findAllIncomes(userId);
+  async findAllIncomes(@User('id') user): Promise<findAllIncomesOutputDTO[]> {
+    return await this.incomeService.findAllIncomes(user);
   }
 
   @ApiOperation({ summary: 'Listar registro de receita' })
@@ -70,10 +69,9 @@ export class IncomeController {
   @Get(':id')
   async findOneIncome(
     @Param('id') id: string,
-    @Req() req,
+    @User('id') user,
   ): Promise<findOneIncomeOutputDTO> {
-    const userId = req.user.id;
-    return await this.incomeService.findOneIncome(id, userId);
+    return await this.incomeService.findOneIncome(id, user);
   }
 
   @ApiOperation({ summary: 'Editar registro de receita' })
@@ -86,10 +84,9 @@ export class IncomeController {
   async updateIncome(
     @Body() data: UpdateIncomeInputDTO,
     @Param('id') id: string,
-    @Req() req,
+    @User('id') user,
   ): Promise<UpdateIncomeOutputDTO> {
-    const userId = req.user.id;
-    return await this.incomeService.updateIncome(userId, id, data);
+    return await this.incomeService.updateIncome(user, id, data);
   }
 
   @ApiOperation({ summary: 'Excluir registro de receita' })
@@ -101,9 +98,8 @@ export class IncomeController {
   @Delete(':id')
   async deleteIncome(
     @Param('id') id: string,
-    @Req() req,
+    @User('id') user,
   ): Promise<DeleteIncomeOutputDTO> {
-    const userId = req.user.id;
-    return await this.incomeService.deleteIncome(id, userId);
+    return await this.incomeService.deleteIncome(id, user);
   }
 }
