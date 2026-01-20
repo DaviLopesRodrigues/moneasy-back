@@ -1,14 +1,21 @@
 import {
   CanActivate,
   ExecutionContext,
+  forwardRef,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
+import { UserService } from 'src/modules/user/user.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    @Inject(forwardRef(() => UserService))
+    private readonly userService: UserService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
@@ -23,7 +30,11 @@ export class AuthGuard implements CanActivate {
 
       const data = await this.authService.checkToken(token);
 
-      request.user = data;
+      request.payload = data;
+
+      const user = await this.userService.findOneUser(data.id);
+
+      request.user = user;
 
       return true;
     } catch (error) {
